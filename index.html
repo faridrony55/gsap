@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smooth Scroll with Image Transition</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            /* height: 200vh;  */
+            background: linear-gradient(to bottom, #d8e3c8, #a3b87d);
+            overflow-x: hidden;
+            
+        }
+
+        .container {
+            
+            padding: 100px 10%;
+            text-align: center;
+        }
+
+        .top-image {
+            /* position: absolute; */ 
+            /* transform: translate(-50%, -50%); */
+            /* max-width: 250px; */
+            z-index: 2;
+        }
+
+        .bottom-container {
+            position: relative;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px; 
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 50px 20px; /* Push content down */
+        }
+        .featuredProduct{
+            border: 1px solid; 
+            flex-basis: 50%;
+            height: 100%;
+            
+            z-index: 1;
+            opacity: 1;
+        }
+
+        .product-info {
+            flex-basis:50%;
+            margin-top: 20px;
+            padding-left: 50px;
+            z-index: 2;
+        }
+
+        .product-info h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+
+        h1{
+            font-size: 100px;
+            margin: 0;
+        }
+        .fujibar{
+            position: relative;
+        }
+        .fujibar #image1 {
+                position: absolute;
+                width: auto;
+                height: 100%;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>The First Asian-Inspired High-Protein Bar</h1>
+        <div class="fujibar" id="fujibar">
+            <img src="bar1.png" class="top-image" id="image" alt="Top Image">
+            <img src="bar.png" class="top-images" id="image1" alt="Top Image">
+        </div>
+        <div class="trigger"></div>
+    </div>
+
+    <div class="bottom-container">
+        <div class="featuredProduct" id="bottomImage"></div>
+        <div class="product-info">
+            <h2>Matcha Protein Bar</h2>
+            <p>Experience the essence of our flagship Matcha Protein Bar. With 22 grams of protein and free from artificial ingredients, this bar offers both nutrition and taste in perfect harmony.</p>
+            <p>$32 / 8 bars</p>
+        </div>
+    </div>
+    <div class="container">
+        <h1>The First Asian-Inspired High-Protein Bar</h1>
+    </div>
+
+    <!-- GSAP and ScrollTrigger Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Setup animation with GSAP and ScrollTrigger
+        let image = document.getElementById('image');
+        let image1 = document.getElementById('image1');
+        let bottomImage = document.getElementById('bottomImage');
+
+        gsap.to(".fujibar", {
+            scrollTrigger: {
+                trigger: ".trigger",
+                start: "top center",  
+                end: "bottom top", 
+                scrub: true,
+                onToggle: (self) => {
+    if (self.isActive) { 
+        image.style.zIndex = 1;
+
+        // Add height, scale, and transform properties
+        //image.style.height = '300px';  
+        image.style.transform = 'translateY(50px)'; // Example: scaling and translating the image
+        image.style.transition = 'transform 0.5s ease, height 0.5s ease'; // Smooth transition for transform and height
+
+    } else { 
+        image1.style.zIndex = 2;
+
+        // Revert the height, scale, and transform properties
+        //image1.style.height = '200px'; // Adjust the height as needed
+        image1.style.transform = 'translateY(0px)'; // Reverting scaling and translation
+        image1.style.transition = 'transform 0.5s ease, height 0.5s ease'; // Smooth transition for transform and height
+    }
+}
+            }, 
+            scale: 0.8, // Optionally scale the image down
+            x: '-20vw', // Move to the left
+            y: '70vh',  // Move down to the bottom left
+            ease: "power2.out"
+        });
+    </script>
+</body>
+</html>
